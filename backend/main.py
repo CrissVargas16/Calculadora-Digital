@@ -1,3 +1,4 @@
+from sympy import sympify, sqrt, cos, sin, log, pi, exp, tan
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -44,6 +45,29 @@ def dividir():
     b = data.get("b", 0)
     resultado = a / b
     return jsonify({"resultado": resultado})
+
+
+@app.route("/calcular", methods=["POST"])
+def calcular():
+    try:
+        data = request.get_json()
+        print("DATA RECIBIDA", data)
+        expresion = data.get("expresion", 0)
+        print("EXPRESION RECIBIDA", expresion)
+        contexto = {
+            "sqrt": sqrt,
+            "sin": sin,
+            "cos": cos,
+            "log": log,
+            "pi": pi,
+            "exp": exp,
+            "tan": tan,
+        }
+
+        resultado = sympify(expresion, locals=contexto).evalf()
+        return jsonify({"resultado": float(resultado)})
+    except Exception:
+        return jsonify({"error": "Expresion invalida"}), 400
 
 
 if __name__ == "__main__":
