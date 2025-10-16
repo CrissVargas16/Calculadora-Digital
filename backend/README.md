@@ -7,7 +7,7 @@ Se realiza la instalacion de un entorno virtual (venv) y procedente se instala e
 Se realiza la creacion de las funciones basicas de una calculadora tales como sumar,restar,multiplicar y dividir.
 
 ## Paso 3 
-Instalamos un framework Sympy para realizar las operaciones mas complejas
+Instalamos la libreria Sympy para realizar las operaciones mas complejas
 
 ## Instalacion de dependencias
 
