@@ -5,6 +5,7 @@ import './App.css'
 
 function App() {
   const [input, setInput] = useState("")
+  const [result, setResult] = useState("")
 
   const handleClick = (value) => {
     setInput(input + value);
@@ -14,8 +15,20 @@ function App() {
     setInput("");
   }
   const handleBackspace = () => {
+    if (result !== "") {
+      setInput("");
+      setResult("");
+      return;
+    }
+    const funciones = ["sin(", "cos(", "tan(", "sqrt(", "pi", "Error"];
+    for (let f of funciones) {
+      if (input.endsWith(f)) {
+        setInput(input.slice(0, -f.length));
+        return;
+      }
+    }
     setInput(input.slice(0, -1));
-  }
+  };
 
   const handleEqual = async () => {
     try {
@@ -26,11 +39,19 @@ function App() {
       });
       const data = await response.json();
       setInput(data.resultado.toString());
+      setResult(data.resultado.toString());
     } catch (error) {
       console.error("Error:", error);
       setInput("Error");
     }
   };
+  const displayValue = input
+    .replace(/sqrt/g, "√")
+    .replace(/pi/g, "π")
+    .replace(/sin/g, "sin")
+    .replace(/cos/g, "cos")
+    .replace(/tan/g, "tan");
+
   return (
     <div style={{
       width: "260px",
@@ -58,11 +79,14 @@ function App() {
         borderRadius: "10px",
         marginBottom: "15px",
         padding: "10px",
-        fontSize: "20px",
+        fontSize: "30px",
+        fontWeight: "bold",
         textAlign: "right",
-        color: "#000000ff"
+        color: "#000000ff",
+        overflow: "auto",
+        whiteSpace: "nowrap"
       }}>
-        {input || "0"}
+        {displayValue || "0"}
       </div>
       {/* Controles Principales*/}
       <div style={{
@@ -116,7 +140,7 @@ function App() {
 
         <button onClick={() => handleClick("0")}>0</button>
         <button onClick={() => handleClick(".")}>.</button>
-        <button onClick={handleEqual}>=</button>
+        <button onClick={handleEqual} style={{ backgroundColor: "#03c4ffff", fontWeight: "bold" }}>=</button>
       </div>
 
     </div >
