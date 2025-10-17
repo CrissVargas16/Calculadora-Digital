@@ -7,10 +7,6 @@ CORS(app)
 
 
 @app.route("/")
-def hello_wordl():
-    return "Hello, World:"
-
-
 @app.route("/sumar", methods=["POST"])
 def sumar():
     data = request.get_json()
